@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+
+<service_bundle type='manifest' name='bx:openldap'>
+
+	<service	name='bx/network/openldap'
+		type='service'
+		version='1'>
+
+		<create_default_instance enabled='false' />
+
+		<dependency	name='filesystem'
+			grouping='require_all'
+			restart_on='none'
+			type='service'>
+			<service_fmri value='svc:/system/filesystem/local' />
+		</dependency>
+
+		<dependency name='net-physical'
+			grouping='require_all'
+			restart_on='none'
+			type='service'>
+			<service_fmri value='svc:/network/physical' />
+		</dependency>
+		
+		<dependency
+			name='config-file'
+			grouping='require_all'
+			restart_on='none'
+			type='path'>
+			<service_fmri 
+				value='file://localhost/etc/opt/bx/openldap/slapd.conf' />
+		 </dependency> 
+
+		<dependent
+			name='bxopenldap_multi-user'
+			grouping='optional_all'
+			restart_on='none'>
+			<service_fmri
+				value='svc:/milestone/multi-user' />
+		</dependent>
+
+		<exec_method name='start'
+			type='method'
+			exec='/opt/bx/sbin/openldap.method start'
+			timeout_seconds='300' />
+
+		<exec_method name='stop'
+			type='method'
+			exec=':kill'
+			timeout_seconds='60' />
+
+		<template>
+			<common_name>
+				<loctext xml:lang='C'>
+				OpenLDAP server
+				</loctext>
+			</common_name>
+		</template>
+	</service>
+
+</service_bundle>
