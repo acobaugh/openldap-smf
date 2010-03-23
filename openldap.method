@@ -11,7 +11,6 @@ start)
 	ulimit -Sn 4096	
 	$PREFIX/libexec/slapd $OPTIONS
 	RETVAL=$?
-	echo "exit value = $RETVAL"
 	if [ $RETVAL -eq 0 ]; then
 		exit $SMF_EXIT_OK
 	else
